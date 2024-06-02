@@ -16,7 +16,7 @@ const createUser = async (req,res)=>{
 }
 const getAllUser = async(req,res)=>{
     try {
-        const result = await query("select username,role from user")
+        const result = await query("select id,username,role from user")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong"})
@@ -28,7 +28,7 @@ const getUserById = async(req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result] = await query("select username,role from user where id=?", [id])
+        const [result] = await query("select id,username,role from user where id=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong"})

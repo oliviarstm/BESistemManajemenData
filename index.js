@@ -1,6 +1,5 @@
 const express = require('express')
 const dotenv = require('dotenv')
-const query = require("./database");
 const app = express()
 const routes=require('./route')
 
