@@ -16,7 +16,7 @@ const createUser = async (req,res)=>{
 }
 const getAllUser = async(req,res)=>{
     try {
-        const result = await query("select id,username,role,COALESCE(m.email, a.email, m2.email) AS email from user LEFT JOIN lms_oliv.mentor m on user.id = m.id_user LEFT JOIN lms_oliv.admin a on user.id = a.id_user LEFT JOIN lms_oliv.mentee m2 on user.id = m2.id_user;")
+        const result = await query("select id,username,role,COALESCE(m.email, a.email, m2.email) AS email from user LEFT JOIN mentor m on user.id = m.id_user LEFT JOIN admin a on user.id = a.id_user LEFT JOIN mentee m2 on user.id = m2.id_user;")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong"})
@@ -28,7 +28,7 @@ const getUserById = async(req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result] = await query("select id,username,role,COALESCE(m.email, a.email, m2.email) AS email from user LEFT JOIN lms_oliv.mentor m on user.id = m.id_user LEFT JOIN lms_oliv.admin a on user.id = a.id_user LEFT JOIN lms_oliv.mentee m2 on user.id = m2.id_user WHERE id=?", [id])
+        const [result] = await query("select id,username,role,COALESCE(m.email, a.email, m2.email) AS email from user LEFT JOIN mentor m on user.id = m.id_user LEFT JOIN admin a on user.id = a.id_user LEFT JOIN mentee m2 on user.id = m2.id_user WHERE id=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong"})
