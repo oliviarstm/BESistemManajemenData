@@ -1,4 +1,6 @@
 const query = require("../database");
+const jwt = require('jsonwebtoken')
+
 
 const login = async (req,res)=>{
     // dapatkan data username dan password dari request
@@ -27,14 +29,33 @@ const login = async (req,res)=>{
         }
 
         // Satukan data untuk dikirimkan
-        const data = {
+        let data = {
             username:result.username,
             role:result.role
         }
 
-        return res.status(200).json({data})
+        if (result.role==="admin"){
+            console.log("Admin")
+            const [findAdmin] = await query('SELECT id_admin, nama FROM admin where id_user=? ', [findId.id])
+            data={...data, accountId:findAdmin.id_admin}
+            data={...data, name:findAdmin.nama}
+        }
+        if (result.role==="mentor"){
+            console.log("Mentor")
+            const [findMentor] = await query('SELECT id_mentor, nama FROM mentor where id_user=? ', [findId.id])
+            data={...data, accountId:findMentor.id_mentor}
+            data={...data, name:findMentor.nama}
+        }
+        if (result.role==="mentee"){
+            console.log("Mentee")
+            const [findMentee] = await query('SELECT id_mentee, name FROM mentee where id_user=? ', [findId.id])
+            data={...data, accountId:findMentee.id_mentee}
+            data={...data, name:findMentee.name}
+        }
+        const token = jwt.sign(data, process.env.ACCESS_SECRET_KEY)
+        return res.status(200).json({data, token})
     }catch (e) {
-        return res.status(400).json({msg:"Something Wrong"})
+        return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
 

@@ -21,7 +21,7 @@ const getMenteeById= async (req,res)=>{
 }
 const createMentee= async (req,res)=>{
     const {
-        phone_number, email, name, nim, class_mentee, session, category, major, id_user, id_mentor, id_university
+        phone_number, email, name, nim, class : class_mentee, session, category, major, id_user, id_mentor, id_university
     } = req.body
     try {
         await query("INSERT INTO mentee(phone_number, email, name, nim, class, session, category, major, id_user, id_mentor, id_university) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [phone_number, email, name, nim, class_mentee, session, category, major, id_user, id_mentor, id_university])
@@ -34,12 +34,12 @@ const createMentee= async (req,res)=>{
 // Might not be used
 const updateMentee= async (req,res)=>{
     const {id} = req.params
-    const {phone_number, email, name, nim, class_mentee, session, category, major} = req.body
+    const {phone_number, email, name, nim, class : class_mentee, session, category, major} = req.body
     if (id===undefined||id===''){
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        await query("UPDATE mentee SET phone_number=?, email=?, name=?, nim=?, class=?, session=?, category=?, major=?,  WHERE id_mentee=?", [phone_number, email, name, nim, class_mentee, session, category, major, id])
+        await query("UPDATE mentee SET phone_number=?, email=?, name=?, nim=?, class=?, session=?, category=?, major=?  WHERE id_mentee=?", [phone_number, email, name, nim, class_mentee, session, category, major, id])
         return res.status(200).json({msg:"Mentee Updated"})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -73,7 +73,7 @@ const getMenteeByIdAdmin= async (req,res)=>{
 const updateMenteeAdmin= async (req,res)=>{
     const {id} = req.params
     // const {phone_number, email, name, nim, class_mentee, session, category, major, id_mentor, id_user } = req.body
-    const {phone_number, email, name, nim, class_mentee, session, category, major, id_mentor, id_university, id_user} = req.body
+    const {phone_number, email, name, nim, class : class_mentee, session, category, major, id_mentor, id_university, id_user} = req.body
     if (id===undefined||id===''){
         return res.status(400).json({msg:"Field cant be empty"})
     }
@@ -86,7 +86,7 @@ const updateMenteeAdmin= async (req,res)=>{
 }
 const updateMenteePassword= async (req,res)=>{
     const {id} = req.params
-    const {phone_number, email, name, nim, class_mentee, session, category, major,password, newPassword, confNewPassword} = req.body
+    const {phone_number, email, name, nim, class : class_mentee, session, category, major,password, newPassword, confNewPassword} = req.body
     if (id===undefined||id===''){
         return res.status(400).json({msg:"Field cant be empty"})
     }
@@ -94,7 +94,8 @@ const updateMenteePassword= async (req,res)=>{
         return res.status(400).json({msg:"Password not match"})
     }
     try {
-        const [result] = await query("select id from user where id=? AND password=?", [id,password])
+        const [findId] = await query("select id_user from mentee where id_mentee=?", [id])
+        const [result] = await query("select id from user where id=? AND password=?", [findId.id_user,password])
         if (result.length===0){
             return res.status(400).json({msg:"Wrong Password"})
         }
