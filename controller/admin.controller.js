@@ -1,7 +1,7 @@
 const query = require("../database");
 const getAllAdmin= async (req,res)=>{
     try {
-        const result = await query("SELECT id_admin, nama, email FROM admin")
+        const result = await query("SELECT id_admin, nama, email, u.username FROM admin left join user u on u.id = admin.id_user")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})

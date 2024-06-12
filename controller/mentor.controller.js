@@ -7,6 +7,14 @@ const getAllMentor= async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const getAllMentorAdmin= async (req,res)=>{
+    try {
+        const result = await query("SELECT id_mentor, nama, email, u.username FROM mentor LEFT JOIN lms_oliv.user u on u.id = mentor.id_user")
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
 const getMentorById= async (req,res)=>{
     const {id} = req.params
@@ -57,4 +65,4 @@ const updateMentorPassword= async (req,res)=>{
     }
 }
 
-module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword}
+module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword, getAllMentorAdmin}
