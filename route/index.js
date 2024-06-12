@@ -7,6 +7,7 @@ const mentee = require('./mentee.route')
 const admin = require('./admin.route')
 const mentor = require('./mentor.route')
 const universitas = require('./universitas.route')
+const validasi = require('./validasi.route')
 
 console.log("Index Run")
 
@@ -16,5 +17,6 @@ app.use(baseurl, mentee)
 app.use(baseurl, admin)
 app.use(baseurl, mentor)
 app.use(baseurl, universitas)
+app.use(baseurl, validasi)
 
 module.exports = app
