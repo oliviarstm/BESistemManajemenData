@@ -57,4 +57,6 @@ const updateAdminPassword= async (req,res)=>{
     }
 }
 
+
+
 module.exports = {getAllAdmin, getAdminById, updateAdmin, updateAdminPassword}
