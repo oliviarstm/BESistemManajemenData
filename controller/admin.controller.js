@@ -1,7 +1,7 @@
 const query = require("../database");
 const getAllAdmin= async (req,res)=>{
     try {
-        const result = await query("SELECT id_admin, nama, email, u.username FROM admin left join user u on u.id = admin.id_user")
+        const result = await query("SELECT id_admin as id, nama, email, u.username FROM admin left join user u on u.id = admin.id_user")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -14,7 +14,7 @@ const getAdminById= async (req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result]= await query("SELECT id_admin, nama, email FROM admin WHERE id_admin=?", [id])
+        const [result]= await query("SELECT id_admin as id, nama, email FROM admin WHERE id_admin=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -57,6 +57,16 @@ const updateAdminPassword= async (req,res)=>{
     }
 }
 
+const deleteAdmin = async (req,res)=>{
+    const {id} = req.params
+    try{
+        await query("DELETE FROM admin WHERE id_admin=?", [id])
+        return res.status(200).json({msg:"Delete Success"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
 
-module.exports = {getAllAdmin, getAdminById, updateAdmin, updateAdminPassword}
+
+module.exports = {getAllAdmin, getAdminById, updateAdmin, updateAdminPassword, deleteAdmin}

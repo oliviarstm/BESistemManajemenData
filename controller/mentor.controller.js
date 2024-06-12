@@ -1,7 +1,7 @@
 const query = require("../database");
 const getAllMentor= async (req,res)=>{
     try {
-        const result = await query("SELECT id_mentor, nama, email FROM mentor")
+        const result = await query("SELECT id_mentor as id, nama, email FROM mentor")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -9,7 +9,7 @@ const getAllMentor= async (req,res)=>{
 }
 const getAllMentorAdmin= async (req,res)=>{
     try {
-        const result = await query("SELECT id_mentor, nama, email, u.username FROM mentor LEFT JOIN user u on u.id = mentor.id_user")
+        const result = await query("SELECT id_mentor as id, nama, email, u.username FROM mentor LEFT JOIN user u on u.id = mentor.id_user")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -22,7 +22,7 @@ const getMentorById= async (req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result]= await query("SELECT id_mentor, nama, email FROM mentor WHERE id_mentor=?", [id])
+        const [result]= await query("SELECT id_mentor as id, nama, email FROM mentor WHERE id_mentor=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -64,5 +64,14 @@ const updateMentorPassword= async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const deleteMentor = async (req,res)=>{
+    const {id} = req.params
+    try{
+        await query("DELETE FROM mentor WHERE id_mentor=?", [id])
+        return res.status(200).json({msg:"Delete Success"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
-module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword, getAllMentorAdmin}
+module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword, getAllMentorAdmin, deleteMentor}
