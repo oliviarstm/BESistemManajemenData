@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: lms_oliv
+-- Host: 127.0.0.1    Database: lms_oliv_v2
 -- ------------------------------------------------------
 -- Server version	8.0.34
 
@@ -43,35 +43,6 @@ LOCK TABLES `absensi` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `admin`
---
-
-DROP TABLE IF EXISTS `admin`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
-  `id_admin` int NOT NULL AUTO_INCREMENT,
-  `nama` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `id_user` int NOT NULL,
-  PRIMARY KEY (`id_admin`),
-  UNIQUE KEY `admin_pk` (`email`),
-  KEY `admin_user_id_fk` (`id_user`),
-  CONSTRAINT `admin_user_id_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `admin`
---
-
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` (`id_admin`, `nama`, `email`, `id_user`) VALUES (1,'test satu','testsatu@email.com',2);
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `mentee`
 --
 
@@ -81,7 +52,6 @@ DROP TABLE IF EXISTS `mentee`;
 CREATE TABLE `mentee` (
   `id_mentee` int NOT NULL AUTO_INCREMENT,
   `phone_number` bigint NOT NULL,
-  `email` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   `nim` varchar(20) NOT NULL,
   `class` enum('A','B','C') NOT NULL,
@@ -93,14 +63,13 @@ CREATE TABLE `mentee` (
   `id_university` int NOT NULL,
   PRIMARY KEY (`id_mentee`),
   UNIQUE KEY `mentee_pk` (`phone_number`),
-  UNIQUE KEY `mentee_pk2` (`email`),
-  KEY `mentee_user_id_fk` (`id_user`),
   KEY `mentee_mentor_id_fk` (`id_mentor`),
   KEY `mentee_university_id_fk` (`id_university`),
+  KEY `mentee_user_id_fk` (`id_user`),
   CONSTRAINT `mentee_mentor_id_fk` FOREIGN KEY (`id_mentor`) REFERENCES `mentor` (`id_mentor`),
   CONSTRAINT `mentee_university_id_fk` FOREIGN KEY (`id_university`) REFERENCES `university` (`id_university`),
   CONSTRAINT `mentee_user_id_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +78,7 @@ CREATE TABLE `mentee` (
 
 LOCK TABLES `mentee` WRITE;
 /*!40000 ALTER TABLE `mentee` DISABLE KEYS */;
-INSERT INTO `mentee` (`id_mentee`, `phone_number`, `email`, `name`, `nim`, `class`, `session`, `category`, `major`, `id_user`, `id_mentor`, `id_university`) VALUES (3,81234,'kelvin@email.com','kelvin K','123456','A','Siang',1,'sistem informasi',1,1,1),(4,844756,'andi@email.com','andi','77567','B','Pagi',0,'mekatronik',3,1,1);
+INSERT INTO `mentee` (`id_mentee`, `phone_number`, `name`, `nim`, `class`, `session`, `category`, `major`, `id_user`, `id_mentor`, `id_university`) VALUES (1,81234,'Kelvin','123456','A','Siang',1,'sistem informasi',1,1,1),(2,844756,'andi','77567','B','Pagi',0,'mekatronik',3,1,1);
 /*!40000 ALTER TABLE `mentee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,10 +92,8 @@ DROP TABLE IF EXISTS `mentor`;
 CREATE TABLE `mentor` (
   `id_mentor` int NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
   `id_user` int NOT NULL,
   PRIMARY KEY (`id_mentor`),
-  UNIQUE KEY `mentor_pk` (`email`),
   KEY `mentor_user_id_fk` (`id_user`),
   CONSTRAINT `mentor_user_id_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -138,7 +105,7 @@ CREATE TABLE `mentor` (
 
 LOCK TABLES `mentor` WRITE;
 /*!40000 ALTER TABLE `mentor` DISABLE KEYS */;
-INSERT INTO `mentor` (`id_mentor`, `nama`, `email`, `id_user`) VALUES (1,'olivia ristami','olivia1@email.com',6);
+INSERT INTO `mentor` (`id_mentor`, `nama`, `id_user`) VALUES (1,'olvia ristami',4);
 /*!40000 ALTER TABLE `mentor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +126,7 @@ CREATE TABLE `pengajuan` (
   PRIMARY KEY (`id_pengajuan`),
   KEY `pengajuan_mentee_id_if` (`id_mentee`),
   CONSTRAINT `pengajuan_mentee_id_if` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,6 +135,7 @@ CREATE TABLE `pengajuan` (
 
 LOCK TABLES `pengajuan` WRITE;
 /*!40000 ALTER TABLE `pengajuan` DISABLE KEYS */;
+INSERT INTO `pengajuan` (`id_pengajuan`, `alasan`, `tipe`, `lampiran`, `date`, `id_mentee`) VALUES (3,'ga ada waktu lagi','pengunduran diri',NULL,'2024-06-12',1);
 /*!40000 ALTER TABLE `pengajuan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,8 +153,8 @@ CREATE TABLE `pengumpulan_tugas` (
   `id_tugas` int NOT NULL,
   `id_mentee` int NOT NULL,
   PRIMARY KEY (`id_pengumpulan`),
-  KEY `pengumpulan_tugas_tugas_id_fk` (`id_tugas`),
   KEY `pengumpulan_tugas_mentee_id_fk` (`id_mentee`),
+  KEY `pengumpulan_tugas_tugas_id_fk` (`id_tugas`),
   CONSTRAINT `pengumpulan_tugas_mentee_id_fk` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`),
   CONSTRAINT `pengumpulan_tugas_tugas_id_fk` FOREIGN KEY (`id_tugas`) REFERENCES `tugas` (`id_tugas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -264,10 +232,12 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `role` enum('admin','mentor','mentee') NOT NULL,
   `password` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_pk` (`username`)
+  UNIQUE KEY `user_pk` (`username`),
+  UNIQUE KEY `user_pk2` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -277,7 +247,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `username`, `role`, `password`) VALUES (1,'kelvin','mentee','1234'),(2,'test1','admin','1234'),(3,'andi','mentee','1234'),(6,'olivia','mentor','1234');
+INSERT INTO `user` (`id`, `username`, `email`, `role`, `password`) VALUES (1,'kelvin','kelvin@email.com','mentee','1234'),(2,'test1','test1@email.com','admin','1234'),(3,'andi','andi@email.com','mentee','1234'),(4,'olivia','olivia@email.com','mentor','1234'),(5,'abdee','abdee@email.com','admin','1234'),(6,'bill','bill@email.com','mentor','1234');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -290,4 +260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  9:21:32
+-- Dump completed on 2024-06-23  0:49:06
