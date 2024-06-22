@@ -33,13 +33,6 @@ const login = async (req,res)=>{
             username:result.username,
             role:result.role
         }
-
-        if (result.role==="admin"){
-            console.log("Admin")
-            const [findAdmin] = await query('SELECT id_admin, nama FROM admin where id_user=? ', [findId.id])
-            data={...data, accountId:findAdmin.id_admin}
-            data={...data, name:findAdmin.nama}
-        }
         if (result.role==="mentor"){
             console.log("Mentor")
             const [findMentor] = await query('SELECT id_mentor, nama FROM mentor where id_user=? ', [findId.id])
