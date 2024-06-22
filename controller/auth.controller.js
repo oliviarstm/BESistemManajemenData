@@ -12,7 +12,7 @@ const login = async (req,res)=>{
     }
     try {
         // mencari ID berdasarkan username
-        const [findId] = await query("select id from user where username=?", [username.toLowerCase()])
+        const [findId] = await query("select id from user where username=? or email=?", [username.toLowerCase(),username.toLowerCase()])
         console.log(findId)
 
         // Jika hasilnya kosong, maka error username tidak ditemukan
