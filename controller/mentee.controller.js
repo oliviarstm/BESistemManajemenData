@@ -29,15 +29,15 @@ const getMenteeById= async (req,res)=>{
     }
 }
 const createMentee= async (req,res)=>{
-    // const {
-    //     phone_number, email, name, nim, class : class_mentee, session, category, major, id_user, id_mentor, id_university
-    // } = req.body
-    // try {
-    //     await query("INSERT INTO mentee(phone_number, email, name, nim, class, session, category, major, id_user, id_mentor, id_university) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [phone_number, email, name, nim, class_mentee, session, category, major, id_user, id_mentor, id_university])
-    //     return res.status(200).json({msg:"Mentee Created"})
-    // }catch (e) {
-    //     return res.status(400).json({msg:"Something Wrong", error:e})
-    // }
+    const {
+        phone_number, name, nim, class : class_mentee, session, category, major, id_user, id_mentor, id_university
+    } = req.body
+    try {
+        await query("INSERT INTO mentee(phone_number, name, nim, class, session, category, major, id_user, id_mentor, id_university) VALUES (?,?,?,?,?,?,?,?,?,?)", [phone_number, name, nim, class_mentee, session, category, major, id_user, id_mentor, id_university])
+        return res.status(200).json({msg:"Mentee Created"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
 }
 
 // Might not be used

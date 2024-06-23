@@ -1,17 +1,17 @@
 const query = require("../database");
 const createUser = async (req,res)=>{
-    const {username, role, password} = req.body
-    if (username===undefined||username===""||role===undefined||role===""||password===undefined||password===""){
+    const {username, role, password, email} = req.body
+    if (username===undefined||username===""||role===undefined||role===""||password===undefined||password===""||email===undefined||email===""){
         return res.status(400).json({msg:"Field cant be empty"})
     }
     if (role!=='admin'&&role!=='mentee'&&role!=='mentor'){
         return res.status(400).json({msg:"Role not match"})
     }
     try {
-        await query("insert into user(username, role, password) VALUES (?,?,?)", [username,role,password])
-        return res.status(200).json({msg:"User Created Success"})
+        const result=await query("insert into user(username, email, role, password) VALUES (?,?,?,?)", [username,email,role,password])
+        return res.status(200).json({msg:"User Created Success", result:result.insertId})
     }catch (e) {
-        return res.status(400).json({msg:"Something Wrong"})
+        return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
 const getAllUser = async(req,res)=>{
