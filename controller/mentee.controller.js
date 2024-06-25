@@ -1,7 +1,7 @@
 const query = require("../database");
 const getAllMentee= async (req,res)=>{
     try {
-        const result = await query("SELECT id_mentee as id, name, u.university_name, class, session  FROM mentee left join university u on u.id_university = mentee.id_university")
+        const result = await query("SELECT id_mentee as id, name, u.university_name, class, session  FROM mentee left join university u on u.id_university = mentee.id_university ORDER BY name asc")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -10,7 +10,7 @@ const getAllMentee= async (req,res)=>{
 const getByClass= async (req,res)=>{
     const {class:class_mentee} =req.query
     try {
-        const result = await query("SELECT id_mentee as id, name, u.university_name, class, session  FROM mentee left join university u on u.id_university = mentee.id_university WHERE class=?", [class_mentee])
+        const result = await query("SELECT id_mentee as id, name, u.university_name, class, session  FROM mentee left join university u on u.id_university = mentee.id_university WHERE class=? ORDER BY name asc", [class_mentee])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
