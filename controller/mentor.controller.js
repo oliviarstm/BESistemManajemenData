@@ -15,7 +15,7 @@ const getMentorById= async (req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result]= await query("SELECT id_mentor, nama, u.email, u.id FROM mentor LEFT JOIN user u on u.id = mentor.id_user WHERE id_mentor=?", [id])
+        const [result]= await query("SELECT id_mentor, nama, u.email, u.username, u.id FROM mentor LEFT JOIN user u on u.id = mentor.id_user WHERE id_mentor=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
