@@ -22,7 +22,7 @@ const getMenteeById= async (req,res)=>{
         return res.status(400).json({msg:"Field cant be empty"})
     }
     try {
-        const [result]= await query("SELECT id_mentee as id, phone_number, u2.username, u2.email, name, nim, class, session, category, major, m.id_mentor, u.id_university FROM mentee LEFT JOIN mentor m on m.id_mentor = mentee.id_mentor left join university u on u.id_university = mentee.id_university LEFT JOIN user u2 on u2.id = mentee.id_user WHERE id_mentee=?", [id])
+        const [result]= await query("SELECT id_mentee as id, phone_number, u2.username, u2.email, name, nim, class, session, category, major, m.nama AS mentor_name, u.university_name FROM mentee LEFT JOIN mentor m on m.id_mentor = mentee.id_mentor left join university u on u.id_university = mentee.id_university LEFT JOIN user u2 on u2.id = mentee.id_user WHERE id_mentee=?", [id])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
