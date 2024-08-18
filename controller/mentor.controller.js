@@ -66,5 +66,14 @@ const deleteMentor = async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const createMentor= async (req,res)=>{
+    const {name, id_user} = req.body
+    try {
+        await query("INSERT INTO mentor(nama, id_user) VALUES (?,?)", [name, id_user])
+        return res.status(200).json({msg:"Mentor Created"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
-module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword, deleteMentor}
+module.exports = {getAllMentor, getMentorById, updateMentor, updateMentorPassword, deleteMentor,createMentor}
