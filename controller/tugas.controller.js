@@ -51,4 +51,14 @@ const deleteTugas = async (req,res)=>{
     }
 }
 
-module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas}
+const getPengumpulanTugas = async (req,res)=>{
+    const {id} = req.body
+    try {
+        const result = await query("SELECT id_pengumpulan AS id, nilai, lampiran, name as Name, class as Class, session as Session, subyek FROM pengumpulan_tugas LEFT JOIN mentee m on m.id_mentee = pengumpulan_tugas.id_mentee LEFT JOIN lms_oliv_v2.tugas t on t.id_tugas = pengumpulan_tugas.id_tugas WHERE t.id_tugas=?", [id])
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
+
+module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas}
