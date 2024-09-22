@@ -61,4 +61,15 @@ const getPengumpulanTugas = async (req,res)=>{
     }
 }
 
-module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas}
+const updateNilai = async (req,res)=>{
+    const {id}=req.params
+    const {nilai}=req.body
+    try {
+        const result = await query(`update pengumpulan_tugas set nilai=? where id_pengumpulan=?;`, [nilai,id])
+        return res.status(200).json({msg:"Update Nilai Berhasil"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
+
+module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai}
