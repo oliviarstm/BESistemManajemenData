@@ -9,6 +9,7 @@ const mentor = require('./mentor.route')
 const universitas = require('./universitas.route')
 const validasi = require('./validasi.route')
 const tugas = require('./tugas.route')
+const absensi = require('./absensi.route')
 
 console.log("Index Run")
 
@@ -20,5 +21,6 @@ app.use(baseurl, mentor)
 app.use(baseurl, universitas)
 app.use(baseurl, validasi)
 app.use(baseurl, tugas)
+app.use(baseurl, absensi)
 
 module.exports = app
