@@ -19,6 +19,18 @@ const getTugasById=async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const getTugasByMentee=async (req,res)=>{
+    const {id} = req.params
+    try {
+        if (id===undefined||id===''){
+            return res.status(400).json({msg:"Field cant be empty"})
+        }
+        const result= await query(`SELECT t.id_tugas AS id, t.subyek AS NameTugas, pt.nilai AS Nilai FROM tugas t LEFT JOIN pengumpulan_tugas pt ON t.id_tugas = pt.id_tugas AND pt.id_mentee = ? ORDER BY t.id_tugas`, [id])
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 const createTugas=async (req,res)=>{
     const {subyek, batas_waktu} = req.body
     try {
@@ -72,4 +84,4 @@ const updateNilai = async (req,res)=>{
     }
 }
 
-module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai}
+module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai, getTugasByMentee}

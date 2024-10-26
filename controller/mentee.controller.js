@@ -16,6 +16,15 @@ const getByClass= async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const getByMentor= async (req,res)=>{
+    const {id} = req.params
+    try {
+        const result = await query("SELECT id_mentee as id, name, u.university_name, class, session  FROM mentee left join university u on u.id_university = mentee.id_university WHERE id_mentor=? ORDER BY name asc", [id])
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 const getMenteeById= async (req,res)=>{
     const {id} = req.params
     if (id===undefined||id===''){
@@ -114,4 +123,4 @@ const updateMenteePassword= async (req,res)=>{
     }
 }
 
-module.exports = {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, getMenteeByIdAdmin, updateMenteeAdmin, updateMenteePassword, getByClass}
+module.exports = {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, getMenteeByIdAdmin, updateMenteeAdmin, updateMenteePassword, getByClass, getByMentor}
