@@ -28,27 +28,53 @@ const getAllByMentor= async (req,res)=>{
     }
 }
 
-const insertUpdate= async (req,res)=>{
-    const {date, id, id_mentee} = req.body
+const insertUpdate = async (req, res) => {
+    const { date, id, id_mentee } = req.body;
     try {
-        // Kalau datanya tidak ada, maka tambahkan data baru berdasarkan id, waktu, dan id_mentee
-        if (!id){
-            console.log(date, id_mentee)
-            const result = await query(`INSERT INTO absensi(waktu, status, id_mentee) VALUES(?, 1, ?)`, [date, id_mentee])
-            return res.status(200).json({msg:"Data Inserted Success"})
+        if (id) {
+            // If an id is provided, check its current status
+            const [result] = await query(`SELECT status FROM absensi WHERE id_absensi = ?`, id);
+            if (result) {
+                let reverseCheck = result.status === 1 ? 0 : 1;
+                await query(`UPDATE absensi SET status = ? WHERE id_absensi = ?`, [reverseCheck, id]);
+                return res.status(200).json({ msg: "Data Update Success" });
+            }
         } else {
-            //     Kalau datanya ada, cek dulu status nya saat ini
-            const [result] = await query(`SELECT status FROM absensi where id_absensi=?`,id)
-            let reverseCheck = result.status === 1 ? 0 : 1;
-            await query(`UPDATE absensi SET status=? WHERE id_absensi=?`, [reverseCheck, id])
-            return res.status(200).json({msg:"Data Update Success"})
+            // Insert a new entry if no id is provided
+            const result = await query(`INSERT INTO absensi(waktu, status, id_mentee) VALUES(?, 1, ?)`, [date, id_mentee]);
+            return res.status(200).json({ msg: "Data Inserted Success" });
         }
-        const result = await query("SELECT absensi.id_absensi AS id, m.name AS Name, m.class AS Kelas, m.session AS Sesi, absensi.status AS checked, m.id_mentee FROM lms_oliv_v2.mentee m LEFT JOIN absensi ON m.id_mentee = absensi.id_mentee AND absensi.waktu = ? WHERE m.class = ?", [date,kelas])
-        return res.status(200).json({data:result})
-    }catch (e) {
-        return res.status(400).json({msg:"Something Wrong", error:e})
+    } catch (e) {
+        return res.status(400).json({ msg: "Something Went Wrong", error: e });
     }
-}
+};
+
+const insertAllUnchecked = async (req, res) => {
+    const { date } = req.body;
+    try {
+        // Fetch all mentees without attendance records for the given date
+        const mentees = await query(`
+            SELECT m.id_mentee FROM mentee m
+            LEFT JOIN absensi a ON m.id_mentee = a.id_mentee AND a.waktu = ?
+            WHERE a.id_absensi IS NULL
+        `, [date]);
+
+        // Prepare insert queries
+        const recordsToInsert = mentees.map(mentee => [date, 0, mentee.id_mentee]);
+
+        if (recordsToInsert.length > 0) {
+            // Insert all null attendance records at once
+            await query(`INSERT INTO absensi(waktu, status, id_mentee) VALUES ?`, [recordsToInsert]);
+            return res.status(200).json({ msg: "All Data Inserted Success" });
+        } else {
+            return res.status(200).json({ msg: "No Data to Insert" });
+        }
+    } catch (e) {
+        return res.status(400).json({ msg: "Something Went Wrong", error: e });
+    }
+};
+
+
 
 const getIzin= async (req,res)=>{
     try {
@@ -59,4 +85,4 @@ const getIzin= async (req,res)=>{
     }
 }
 
-module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin}
+module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked}
