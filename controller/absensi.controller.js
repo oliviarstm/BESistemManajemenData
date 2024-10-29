@@ -27,6 +27,15 @@ const getAllByMentor= async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const getAllByMentee= async (req,res)=>{
+    const {date, idMentee} = req.body
+    try {
+        const result = await query("SELECT absensi.id_absensi AS id, waktu AS waktu, absensi.status AS status FROM absensi WHERE id_mentee=? AND MONTH(waktu) = ? ORDER BY waktu DESC;", [idMentee, date])
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
 const insertUpdate = async (req, res) => {
     const { date, id, id_mentee } = req.body;
@@ -85,4 +94,4 @@ const getIzin= async (req,res)=>{
     }
 }
 
-module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked}
+module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked, getAllByMentee}

@@ -1,10 +1,11 @@
 const express = require('express')
-const {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked} = require("../controller/absensi.controller");
+const {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked, getAllByMentee} = require("../controller/absensi.controller");
 const routes = express()
 
 routes.post('/absensi', getAll)
 routes.post('/absensiclass/', getAllByClass)
 routes.post('/absensimentor/', getAllByMentor)
+routes.post('/absensimentee/', getAllByMentee)
 routes.post('/insertabsensi', insertUpdate)
 routes.post('/insertallabsensi', insertAllUnchecked)
 routes.get('/izin', getIzin)
