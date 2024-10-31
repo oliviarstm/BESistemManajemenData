@@ -52,7 +52,7 @@ const insertUpdate = async (req, res) => {
             }
         } else {
             // Insert a new entry if no id is provided
-            const result = await query(`INSERT INTO absensi(waktu, status, id_mentee) VALUES(?, 1, ?)`, [date, id_mentee]);
+            await query(`INSERT INTO absensi(waktu, status, id_mentee) VALUES(?, 1, ?)`, [date, id_mentee]);
             return res.status(200).json({ msg: "Data Inserted Success" });
         }
     } catch (e) {
@@ -97,7 +97,6 @@ const getIzin= async (req,res)=>{
 }
 
 const insertIzin=async (req,res)=>{
-    console.log(req.files)
     if (!req.files || !req.files.lampiran){
         return res.status(400).json({error:"No Evidence"})
     }
@@ -108,7 +107,6 @@ const insertIzin=async (req,res)=>{
         evidence = lampiran[0].filename;
     }
     try {
-        // console.log([alasan,"izin",evidence,dateConvert(Tanggal),id])
         await query(`INSERT INTO pengajuan(alasan, tipe, lampiran, date, id_mentee) VALUES (?,?,?,?,?)`, [alasan,"izin",evidence,dateConvert(Tanggal),id])
         return res.status(200).json({ msg: "Data Insert Success" })
     }catch (e) {

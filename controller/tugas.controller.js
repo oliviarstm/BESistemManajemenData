@@ -72,16 +72,42 @@ const getPengumpulanTugas = async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
+const getPengumpulanTugasMentee = async (req,res)=>{
+    const {id_tugas, id_mentee} = req.body
+    try {
+        const result = await query(`SELECT id_pengumpulan FROM pengumpulan_tugas WHERE id_mentee =? AND id_tugas=?;`, [id_mentee, id_tugas])
+        return res.status(200).json({data:result})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
+const addPengumpulanTugas = async (req,res)=>{
+    if (!req.files || !req.files.lampiran){
+        return res.status(400).json({error:"No Evidence"})
+    }
+    const {id_tugas, id_mentee} = req.body
+    let upload=null
+    if (req.files.lampiran) {
+        const { lampiran } = req.files;
+        upload = lampiran[0].filename;
+    }
+    try {
+        await query(`INSERT INTO pengumpulan_tugas(lampiran, id_tugas, id_mentee) VALUES (?,?,?);`, [upload, id_tugas, id_mentee])
+        return res.status(200).json({ msg: "Data Inserted Success" })
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 
 const updateNilai = async (req,res)=>{
     const {id}=req.params
     const {nilai}=req.body
     try {
-        const result = await query(`update pengumpulan_tugas set nilai=? where id_pengumpulan=?;`, [nilai,id])
+        await query(`update pengumpulan_tugas set nilai=? where id_pengumpulan=?;`, [nilai,id])
         return res.status(200).json({msg:"Update Nilai Berhasil"})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
 
-module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai, getTugasByMentee}
+module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai, getTugasByMentee, getPengumpulanTugasMentee, addPengumpulanTugas}
