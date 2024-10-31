@@ -75,7 +75,7 @@ const getPengumpulanTugas = async (req,res)=>{
 const getPengumpulanTugasMentee = async (req,res)=>{
     const {id_tugas, id_mentee} = req.body
     try {
-        const result = await query(`SELECT id_pengumpulan FROM pengumpulan_tugas WHERE id_mentee =? AND id_tugas=?;`, [id_mentee, id_tugas])
+        const result = await query(`SELECT id_pengumpulan, nilai FROM pengumpulan_tugas WHERE id_mentee =? AND id_tugas=?`, [id_mentee, id_tugas])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -98,7 +98,15 @@ const addPengumpulanTugas = async (req,res)=>{
         return res.status(400).json({msg:"Something Wrong", error:e})
     }
 }
-
+const deletePengumpulan = async (req,res)=>{
+    const {id}=req.params
+    try {
+        await query(`DELETE FROM pengumpulan_tugas WHERE id_pengumpulan=?;`, [id])
+        return res.status(200).json({msg:"Delete Pengumpulan Berhasil"})
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
 const updateNilai = async (req,res)=>{
     const {id}=req.params
     const {nilai}=req.body
@@ -110,4 +118,4 @@ const updateNilai = async (req,res)=>{
     }
 }
 
-module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai, getTugasByMentee, getPengumpulanTugasMentee, addPengumpulanTugas}
+module.exports = {getAllTugas, deleteTugas, getTugasById, createTugas, updateTugas, getPengumpulanTugas, updateNilai, getTugasByMentee, getPengumpulanTugasMentee, addPengumpulanTugas, deletePengumpulan}
