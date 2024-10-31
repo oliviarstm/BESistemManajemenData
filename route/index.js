@@ -7,7 +7,7 @@ const mentee = require('./mentee.route')
 const admin = require('./admin.route')
 const mentor = require('./mentor.route')
 const universitas = require('./universitas.route')
-const validasi = require('./validasi.route')
+const validasi = require('./pengunduran.route')
 const tugas = require('./tugas.route')
 const absensi = require('./absensi.route')
 
