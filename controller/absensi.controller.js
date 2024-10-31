@@ -1,4 +1,6 @@
 const query = require("../database");
+const {dateConvert} = require("../utils/tools");
+
 const getAll= async (req,res)=>{
     const {date} = req.body
     try {
@@ -94,4 +96,24 @@ const getIzin= async (req,res)=>{
     }
 }
 
-module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked, getAllByMentee}
+const insertIzin=async (req,res)=>{
+    console.log(req.files)
+    if (!req.files || !req.files.lampiran){
+        return res.status(400).json({error:"No Evidence"})
+    }
+    const {alasan, Tanggal, id} = req.body
+    let evidence=null
+    if (req.files.lampiran) {
+        const { lampiran } = req.files;
+        evidence = lampiran[0].filename;
+    }
+    try {
+        // console.log([alasan,"izin",evidence,dateConvert(Tanggal),id])
+        await query(`INSERT INTO pengajuan(alasan, tipe, lampiran, date, id_mentee) VALUES (?,?,?,?,?)`, [alasan,"izin",evidence,dateConvert(Tanggal),id])
+        return res.status(200).json({ msg: "Data Insert Success" })
+    }catch (e) {
+        return res.status(400).json({msg:"Something Wrong", error:e})
+    }
+}
+
+module.exports = {getAll, getAllByClass, insertUpdate, getAllByMentor, getIzin, insertAllUnchecked, getAllByMentee, insertIzin}
