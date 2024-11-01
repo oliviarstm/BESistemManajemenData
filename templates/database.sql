@@ -29,8 +29,8 @@ CREATE TABLE `absensi` (
   `id_mentee` int NOT NULL,
   PRIMARY KEY (`id_absensi`),
   KEY `absensi_mentee_id_fk` (`id_mentee`),
-  CONSTRAINT `absensi_mentee_id_fk` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `absensi_mentee_id_fk` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=355 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `absensi` (
 
 LOCK TABLES `absensi` WRITE;
 /*!40000 ALTER TABLE `absensi` DISABLE KEYS */;
-INSERT INTO `absensi` (`id_absensi`, `waktu`, `status`, `id_mentee`) VALUES (1,'2024-10-18',1,1),(2,'2024-10-18',1,2),(3,'2024-10-18',1,5),(4,'2024-10-18',1,3),(5,'2024-10-18',1,4),(6,'2024-10-18',0,7),(7,'2024-10-17',1,1),(8,'2024-10-17',1,3),(9,'2024-10-17',1,6);
+INSERT INTO `absensi` (`id_absensi`, `waktu`, `status`, `id_mentee`) VALUES (301,'2024-10-26',0,1),(302,'2024-10-26',1,2),(303,'2024-10-26',0,4),(304,'2024-10-26',1,5),(306,'2024-10-26',1,3),(307,'2024-10-26',0,6),(308,'2024-10-24',0,1),(309,'2024-10-24',1,2),(310,'2024-10-24',1,4),(311,'2024-10-24',0,5),(313,'2024-10-24',1,3),(314,'2024-10-24',0,6),(329,'2024-11-01',0,1),(330,'2024-11-01',0,2),(331,'2024-11-01',0,4),(332,'2024-11-01',0,5),(334,'2024-11-01',0,3),(335,'2024-11-01',0,6),(336,'2024-10-31',1,1),(337,'2024-10-31',1,2),(338,'2024-10-31',1,4),(339,'2024-10-31',0,5),(341,'2024-10-31',0,3),(342,'2024-10-31',0,6),(343,'2024-10-30',0,1),(344,'2024-10-30',0,2),(345,'2024-10-30',0,4),(346,'2024-10-30',0,5),(347,'2024-10-30',0,3),(348,'2024-10-30',0,6),(349,'2024-10-29',0,1),(350,'2024-10-29',0,2),(351,'2024-10-29',0,4),(352,'2024-10-29',0,5),(353,'2024-10-29',0,3),(354,'2024-10-29',0,6);
 /*!40000 ALTER TABLE `absensi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,9 +67,9 @@ CREATE TABLE `mentee` (
   KEY `mentee_mentor_id_fk` (`id_mentor`),
   KEY `mentee_university_id_fk` (`id_university`),
   KEY `mentee_user_id_fk` (`id_user`),
-  CONSTRAINT `mentee_mentor_id_fk` FOREIGN KEY (`id_mentor`) REFERENCES `mentor` (`id_mentor`),
-  CONSTRAINT `mentee_university_id_fk` FOREIGN KEY (`id_university`) REFERENCES `university` (`id_university`),
-  CONSTRAINT `mentee_user_id_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
+  CONSTRAINT `mentee_mentor_id_fk` FOREIGN KEY (`id_mentor`) REFERENCES `mentor` (`id_mentor`) ON UPDATE CASCADE,
+  CONSTRAINT `mentee_university_id_fk` FOREIGN KEY (`id_university`) REFERENCES `university` (`id_university`) ON UPDATE CASCADE,
+  CONSTRAINT `mentee_user_id_fk` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -79,7 +79,7 @@ CREATE TABLE `mentee` (
 
 LOCK TABLES `mentee` WRITE;
 /*!40000 ALTER TABLE `mentee` DISABLE KEYS */;
-INSERT INTO `mentee` (`id_mentee`, `phone_number`, `name`, `nim`, `class`, `session`, `category`, `major`, `id_user`, `id_mentor`, `id_university`) VALUES (1,81234,'Kelvin','123456','A','Siang',1,'sistem informasi',1,1,1),(2,844756,'andi','77567','B','Pagi',0,'mekatronik',3,1,1),(3,812423221,'permana aji syah','87789','C','Pagi',0,'sistem informasi manajemen',16,2,2),(4,8135489268,'hizkia yogi rafael','698177','C','Siang',1,'informatika',21,1,2),(5,8146678992,'hanif annafi','7032799','C','Pagi',1,'teknik komputer',22,1,2),(6,8341689798,'budi prasetio','46897','B','Pagi',1,'teknik komputer',23,2,1),(7,89465168665,'mentee1','552165','A','Siang',0,'pariwisata',26,1,2);
+INSERT INTO `mentee` (`id_mentee`, `phone_number`, `name`, `nim`, `class`, `session`, `category`, `major`, `id_user`, `id_mentor`, `id_university`) VALUES (1,81234,'Kelvin','123456','A','Siang',1,'sistem informasi',1,1,1),(2,844756,'andi','77567','B','Pagi',0,'mekatronik',3,1,1),(3,812423221,'permana aji syah','87789','C','Pagi',0,'sistem informasi manajemen',16,2,2),(4,8135489268,'hizkia yogi rafael','698177','C','Siang',1,'informatika',21,1,2),(5,8146678992,'hanif annafi','7032799','C','Pagi',1,'teknik komputer',22,1,2),(6,8341689798,'budi prasetio','46897','B','Pagi',1,'teknik komputer',23,2,1);
 /*!40000 ALTER TABLE `mentee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +127,7 @@ CREATE TABLE `pengajuan` (
   PRIMARY KEY (`id_pengajuan`),
   KEY `pengajuan_mentee_id_if` (`id_mentee`),
   CONSTRAINT `pengajuan_mentee_id_if` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,6 +136,7 @@ CREATE TABLE `pengajuan` (
 
 LOCK TABLES `pengajuan` WRITE;
 /*!40000 ALTER TABLE `pengajuan` DISABLE KEYS */;
+INSERT INTO `pengajuan` (`id_pengajuan`, `alasan`, `tipe`, `lampiran`, `date`, `id_mentee`) VALUES (5,'Sakit','izin',NULL,'2024-10-16',1),(6,'pusing','izin',NULL,'2024-10-18',1),(7,'fjsalkj','izin','1730306380819-2BpPGr4-bmw-e36-m3-wallpaper.jpg','2024-07-31',2),(8,'fjsalkjfjsakjdflk','izin','1730339681933-2BpPGr4-bmw-e36-m3-wallpaper.jpg','2024-07-31',2),(9,'fjsalkjfjsakjdflk','izin','1730339788233-2BpPGr4-bmw-e36-m3-wallpaper.jpg','2024-07-31',2),(10,'4stdryft','izin','1730339995508-2.jpg','2024-10-31',2),(11,'ty5u6t6gyu','izin','1730340062398-2.jpg','2024-10-31',2),(12,'5578fghhj','izin','1730340224622-s.jpg','2024-10-31',2),(13,'33fjlfd','izin','1730340297623-111.png','2024-10-31',2),(15,'test image postman','izin','1730432765464-2BpPGr4-bmw-e36-m3-wallpaper.jpg','2024-11-01',1),(16,'test pdf','izin','1730434417198-Surat Edaran Jadwal Pelaksanaan & Biaya Wisuda ke III-1.pdf','2024-11-01',1),(17,'Buat paspor','izin','1730447170140-5.jpg','2024-11-02',1),(18,'Ga bisa konversi','pengunduran diri','1730447538379-2.jpg','2024-11-01',1);
 /*!40000 ALTER TABLE `pengajuan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,8 +157,8 @@ CREATE TABLE `pengumpulan_tugas` (
   KEY `pengumpulan_tugas_mentee_id_fk` (`id_mentee`),
   KEY `pengumpulan_tugas_tugas_id_fk` (`id_tugas`),
   CONSTRAINT `pengumpulan_tugas_mentee_id_fk` FOREIGN KEY (`id_mentee`) REFERENCES `mentee` (`id_mentee`),
-  CONSTRAINT `pengumpulan_tugas_tugas_id_fk` FOREIGN KEY (`id_tugas`) REFERENCES `tugas` (`id_tugas`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `pengumpulan_tugas_tugas_id_fk` FOREIGN KEY (`id_tugas`) REFERENCES `tugas` (`id_tugas`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +167,7 @@ CREATE TABLE `pengumpulan_tugas` (
 
 LOCK TABLES `pengumpulan_tugas` WRITE;
 /*!40000 ALTER TABLE `pengumpulan_tugas` DISABLE KEYS */;
-INSERT INTO `pengumpulan_tugas` (`id_pengumpulan`, `nilai`, `lampiran`, `id_tugas`, `id_mentee`) VALUES (1,NULL,'gambar1',1,1),(2,14,'gambar2',1,2),(3,20,'gambar3',1,3),(4,37,'gambar4',2,2),(5,58,'gambar5',2,3),(6,50,'gambar6',3,5);
+INSERT INTO `pengumpulan_tugas` (`id_pengumpulan`, `nilai`, `lampiran`, `id_tugas`, `id_mentee`) VALUES (2,14,'gambar2',1,2),(3,20,'gambar3',1,3),(4,37,'gambar4',2,2),(5,58,'gambar5',2,3),(6,50,'gambar6',3,5),(7,24,'gambar1',3,1),(12,90,'1730386109297-d.jpg',1,1);
 /*!40000 ALTER TABLE `pengumpulan_tugas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +192,7 @@ CREATE TABLE `tugas` (
 
 LOCK TABLES `tugas` WRITE;
 /*!40000 ALTER TABLE `tugas` DISABLE KEYS */;
-INSERT INTO `tugas` (`id_tugas`, `subyek`, `batas_waktu`) VALUES (1,'Crazy Eight','2024-08-30'),(2,'Portofolio','2024-08-28'),(3,'HTML Tables','2024-08-31'),(6,'Mysql Task 1','2024-09-02');
+INSERT INTO `tugas` (`id_tugas`, `subyek`, `batas_waktu`) VALUES (1,'Crazy Eight','2024-10-31'),(2,'Portofolio','2024-08-28'),(3,'HTML Tables','2024-08-31');
 /*!40000 ALTER TABLE `tugas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,4 +263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-18 20:59:38
+-- Dump completed on 2024-11-01 14:58:42
