@@ -89,7 +89,7 @@ const insertAllUnchecked = async (req, res) => {
 
 const getIzin= async (req,res)=>{
     try {
-        const result = await query("select id_pengajuan AS id, m.name AS Name, m.class AS Class, m.session AS Session, alasan AS Alasan, date AS Tanggal from pengajuan left join mentee m on m.id_mentee = pengajuan.id_mentee left join university u on u.id_university = m.id_university left join mentor m2 on m2.id_mentor = m.id_mentor where tipe='izin' ORDER BY pengajuan.date DESC")
+        const result = await query("select id_pengajuan AS id, m.name AS Name, m.class AS Class, m.session AS Session, date AS Tanggal, alasan AS Alasan, lampiran from pengajuan left join mentee m on m.id_mentee = pengajuan.id_mentee left join university u on u.id_university = m.id_university left join mentor m2 on m2.id_mentor = m.id_mentor where tipe='izin' ORDER BY pengajuan.date DESC")
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
