@@ -1,5 +1,5 @@
 const express = require('express')
-const {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, updateMenteeAdmin, getMenteeByIdAdmin,
+const {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, updateMenteeAdmin,
     updateMenteePassword, getByClass, getByMentor
 } = require("../controller/mentee.controller");
 const routes = express()

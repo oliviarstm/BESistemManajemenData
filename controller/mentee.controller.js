@@ -76,18 +76,6 @@ const deleteMentee= async (req,res)=>{
     }
 }
 
-const getMenteeByIdAdmin= async (req,res)=>{
-    // const {id} = req.params
-    // if (id===undefined||id===''){
-    //     return res.status(400).json({msg:"Field cant be empty"})
-    // }
-    // try {
-    //     const [result]= await query("SELECT id_mentee as id, phone_number, mentee.email, name, nim, class, session, category, major, m.nama as mentor_name, u.university_name, u2.username  FROM mentee LEFT JOIN mentor m on m.id_mentor = mentee.id_mentor left join university u on u.id_university = mentee.id_university LEFT JOIN user u2 on u2.id = m.id_user WHERE id_mentee=?", [id])
-    //     return res.status(200).json({data:result})
-    // }catch (e) {
-    //     return res.status(400).json({msg:"Something Wrong", error:e})
-    // }
-}
 const updateMenteeAdmin= async (req,res)=>{
     const {id} = req.params
     const {phone_number, name, nim, class : class_mentee, session, category, major, id_mentor, id_university} = req.body
