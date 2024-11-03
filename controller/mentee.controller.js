@@ -111,4 +111,4 @@ const updateMenteePassword= async (req,res)=>{
     }
 }
 
-module.exports = {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, getMenteeByIdAdmin, updateMenteeAdmin, updateMenteePassword, getByClass, getByMentor}
+module.exports = {getAllMentee, getMenteeById, createMentee, updateMentee, deleteMentee, updateMenteeAdmin, updateMenteePassword, getByClass, getByMentor}
