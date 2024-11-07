@@ -4,7 +4,7 @@ const {dateConvert} = require("../utils/tools");
 const getAll= async (req,res)=>{
     const {date} = req.body
     try {
-        const result = await query("SELECT id_absensi as id, m.name as Name, m.class as Kelas, m.session as Sesi, status as checked, m.id_mentee, waktu as date FROM absensi right join lms_oliv_v2.mentee m on m.id_mentee = absensi.id_mentee AND absensi.waktu = ?", [date])
+        const result = await query("SELECT id_absensi as id, m.name as Name, m.class as Kelas, m.session as Sesi, status as checked, m.id_mentee, waktu as date FROM absensi right join mentee m on m.id_mentee = absensi.id_mentee AND absensi.waktu = ?", [date])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -14,7 +14,7 @@ const getAll= async (req,res)=>{
 const getAllByClass= async (req,res)=>{
     const {date, class:kelas} = req.body
     try {
-        const result = await query("SELECT absensi.id_absensi AS id, m.name AS Name, m.class AS Kelas, m.session AS Sesi, absensi.status AS checked, m.id_mentee, waktu as date FROM lms_oliv_v2.mentee m LEFT JOIN absensi ON m.id_mentee = absensi.id_mentee AND absensi.waktu = ? WHERE m.class = ?", [date,kelas])
+        const result = await query("SELECT absensi.id_absensi AS id, m.name AS Name, m.class AS Kelas, m.session AS Sesi, absensi.status AS checked, m.id_mentee, waktu as date FROM mentee m LEFT JOIN absensi ON m.id_mentee = absensi.id_mentee AND absensi.waktu = ? WHERE m.class = ?", [date,kelas])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
@@ -23,7 +23,7 @@ const getAllByClass= async (req,res)=>{
 const getAllByMentor= async (req,res)=>{
     const {date, idMentor} = req.body
     try {
-        const result = await query("SELECT absensi.id_absensi AS id, m.name AS Name, m.class AS Kelas, m.session AS Sesi, absensi.status AS Checked FROM lms_oliv_v2.mentee m LEFT JOIN absensi ON m.id_mentee = absensi.id_mentee AND absensi.waktu = ? WHERE m.id_mentor = ?;", [date,idMentor])
+        const result = await query("SELECT absensi.id_absensi AS id, m.name AS Name, m.class AS Kelas, m.session AS Sesi, absensi.status AS Checked FROM mentee m LEFT JOIN absensi ON m.id_mentee = absensi.id_mentee AND absensi.waktu = ? WHERE m.id_mentor = ?;", [date,idMentor])
         return res.status(200).json({data:result})
     }catch (e) {
         return res.status(400).json({msg:"Something Wrong", error:e})
